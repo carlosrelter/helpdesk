@@ -42,6 +42,13 @@ public class ChamadoService {
 		return chamadoRepository.save(newChamado(chamadoDTO));
 	}
 	
+	public Chamado update(Integer id, @Valid ChamadoDTO chamadoDTO) {
+		chamadoDTO.setId(id);
+		Chamado chamado = findById(id);
+		chamado = newChamado(chamadoDTO);
+		return chamadoRepository.save(chamado);
+	}
+	
 	private Chamado newChamado(ChamadoDTO chamadoDTO) {
 		
 		Tecnico tecnico = tecnicoService.findById(chamadoDTO.getTecnico());
@@ -60,4 +67,5 @@ public class ChamadoService {
 		chamado.setObservacoes(chamadoDTO.getObservacoes());		
 		return chamado;
 	}
+
 }
