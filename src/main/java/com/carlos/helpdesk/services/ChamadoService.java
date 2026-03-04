@@ -1,5 +1,6 @@
 package com.carlos.helpdesk.services;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,6 +58,10 @@ public class ChamadoService {
 		Chamado chamado = new Chamado();
 		if(chamadoDTO.getId() != null) {
 			chamado.setId(chamadoDTO.getId());
+		}
+		
+		if(chamadoDTO.getStatus().equals(2)) {
+			chamado.setDataFechamento(LocalDate.now());
 		}
 		
 		chamado.setTecnico(tecnico);
