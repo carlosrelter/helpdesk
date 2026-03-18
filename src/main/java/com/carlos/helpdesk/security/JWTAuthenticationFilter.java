@@ -2,6 +2,7 @@ package com.carlos.helpdesk.security;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -47,12 +48,27 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	@Override
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
 			Authentication authResult) throws IOException, ServletException {
-		super.successfulAuthentication(request, response, chain, authResult);
+		String username = ((UserSS) authResult.getPrincipal()).getUsername();
+		String token = jwtUtil.generateTokern(username);
+		response.setHeader("access-control-expose-headers", token);
+		response.setHeader("Authorization", "Bearer " + token);		
 	}
 	
 	@Override
 	protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException failed) throws IOException, ServletException {
-		super.unsuccessfulAuthentication(request, response, failed);
+		response.setStatus(401);
+		response.setContentType("application/json");
+		response.getWriter().append(json());
+	}
+
+	private CharSequence json() {
+		long date = new Date().getTime();
+		return "{"
+				+ "\"timestamp\": " + date + ", "
+				+ "\"status\": 401, "
+				+ "\"error\": \"Não autorizado\", "
+				+ "\"message\": \"Email ou senha inválidos\", "
+				+ "\"path\": \"/login\"}";
 	}
 }
