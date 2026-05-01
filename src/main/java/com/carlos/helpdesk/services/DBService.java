@@ -3,7 +3,9 @@ package com.carlos.helpdesk.services;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.carlos.helpdesk.domain.Chamado;
@@ -29,7 +31,7 @@ public class DBService {
 	private ChamadoRepository chamadoRepository;
 	
 	@Autowired
-	private BCryptPasswordEncoder encoder;
+	private PasswordEncoder encoder;
 	
 	public void instanciaDB() {
 		Tecnico tec1 = new Tecnico(null,"João Paulo","63653230268", "jaump@gmail.com", encoder.encode("123"));
